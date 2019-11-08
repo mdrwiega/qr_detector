@@ -17,44 +17,44 @@ PLUGINLIB_EXPORT_CLASS(qr_detector::QrDetectorNodelet, nodelet::Nodelet);
 namespace qr_detector {
 
 QrDetectorNodelet::QrDetectorNodelet()
-    : it(nh)
+    : it_(nh_)
 { }
 
 QrDetectorNodelet::~QrDetectorNodelet()
 {
-    imgSubscriber.shutdown();
+    img_subscriber_.shutdown();
 }
 
 void QrDetectorNodelet::onInit()
 {
-    nh = getNodeHandle();
+    nh_ = getNodeHandle();
 
-    tagsPublisher = nh.advertise<std_msgs::String>("qr_codes", 10,
-                                                   boost::bind(&QrDetectorNodelet::connectCb, this),
-                                                   boost::bind(&QrDetectorNodelet::disconnectCb, this));
+    tags_publisher_ = nh_.advertise<std_msgs::String>("qr_codes", 10,
+                                                   boost::bind(&QrDetectorNodelet::connectCallback, this),
+                                                   boost::bind(&QrDetectorNodelet::disconnectCallback, this));
 
-    NODELET_INFO_STREAM("Initialising nodelet... [" << nh.getNamespace() << "]");
+    NODELET_INFO_STREAM("Initializing nodelet... [" << nh_.getNamespace() << "]");
 }
 
-void QrDetectorNodelet::connectCb()
+void QrDetectorNodelet::connectCallback()
 {
-    if (!imgSubscriber && tagsPublisher.getNumSubscribers() > 0)
+    if (!img_subscriber_ && tags_publisher_.getNumSubscribers() > 0)
     {
         NODELET_INFO("Connecting to image topic.");
-        imgSubscriber = it.subscribe("image", 1, &QrDetectorNodelet::imageCb, this);
+        img_subscriber_ = it_.subscribe("image", 1, &QrDetectorNodelet::imageCallback, this);
     }
 }
 
-void QrDetectorNodelet::disconnectCb()
+void QrDetectorNodelet::disconnectCallback()
 {
-    if (tagsPublisher.getNumSubscribers() == 0)
+    if (tags_publisher_.getNumSubscribers() == 0)
     {
         NODELET_INFO("Unsubscribing from image topic.");
-        imgSubscriber.shutdown();
+        img_subscriber_.shutdown();
     }
 }
 
-void QrDetectorNodelet::imageCb(const sensor_msgs::ImageConstPtr &image)
+void QrDetectorNodelet::imageCallback(const sensor_msgs::ImageConstPtr &image)
 {
     cv_bridge::CvImageConstPtr cv_image;
 
@@ -68,10 +68,10 @@ void QrDetectorNodelet::imageCb(const sensor_msgs::ImageConstPtr &image)
         return;
     }
 
-    auto tags = detector.detect(cv_image->image, 10);
+    auto tags = detector_.detect(cv_image->image, 10);
     for (auto& tag : tags)
     {
-        tagsPublisher.publish(tag.message);
+        tags_publisher_.publish(tag.message);
     }
 }
 

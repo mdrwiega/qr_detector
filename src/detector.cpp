@@ -11,9 +11,9 @@
 
 namespace qr_detector {
 
-Detector::Detector() : scanner()
+Detector::Detector() : scanner_()
 {
-    scanner.set_config(zbar::ZBAR_NONE, zbar::ZBAR_CFG_ENABLE, 1);
+    scanner_.set_config(zbar::ZBAR_NONE, zbar::ZBAR_CFG_ENABLE, 1);
 }
 
 Tags Detector::detect(const cv::Mat& image, size_t timeout)
@@ -25,7 +25,7 @@ Tags Detector::detect(const cv::Mat& image, size_t timeout)
     auto height = image.rows;
 
     zbar::Image img(width, height, "Y800", grayImg.data, width * height);
-    scanner.scan(img);
+    scanner_.scan(img);
 
     Tags tags;
     for(auto s = img.symbol_begin(); s != img.symbol_end(); ++s)

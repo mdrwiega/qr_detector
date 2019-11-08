@@ -7,7 +7,7 @@
   <author email="drwiega.michal@gmail.com">Michal Drwiega (http://www.mdrwiega.com)</author>
   <maintainer email="drwiega.michal@gmail.com">Michal Drwiega</maintainer>
   <license>BSD</license>
-  <url type="website">http://ros.org/wiki/depth_nav_tools</url>
+  <url type="website">http://ros.org/wiki/qr_detector</url>
 
   <buildtool_depend>catkin</buildtool_depend>
 

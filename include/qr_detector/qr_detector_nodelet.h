@@ -22,16 +22,16 @@ public:
     virtual ~QrDetectorNodelet();
 
 private:
-    virtual void onInit();
-    void connectCb();
-    void disconnectCb();
-    void imageCb(const sensor_msgs::ImageConstPtr& image);
+    void onInit() override;
+    void connectCallback();
+    void disconnectCallback();
+    void imageCallback(const sensor_msgs::ImageConstPtr& image);
 
-    ros::NodeHandle nh;
-    image_transport::ImageTransport it;
-    image_transport::Subscriber imgSubscriber;
-    ros::Publisher tagsPublisher;
-    Detector detector;
+    ros::NodeHandle nh_;
+    image_transport::ImageTransport it_;
+    image_transport::Subscriber img_subscriber_;
+    ros::Publisher tags_publisher_;
+    Detector detector_;
 };
 
 }

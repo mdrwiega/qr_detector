@@ -24,12 +24,13 @@ struct Tag
 using Tags = std::vector<Tag>;
 
 /**
- * QR codes detector
+ * Main QR codes detector class
  */
 class Detector
 {
 public:
     Detector();
+    ~Detector() = default;
 
     /**
      * Detects tags in image.
@@ -40,7 +41,7 @@ public:
     Tags detect(const cv::Mat& image, size_t timeout = 100);
 
 private:
-    zbar::ImageScanner scanner;
+    zbar::ImageScanner scanner_;
 };
 
 }
