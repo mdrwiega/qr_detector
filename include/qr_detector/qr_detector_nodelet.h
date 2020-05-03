@@ -1,10 +1,3 @@
-/******************************************************************************
- * Software License Agreement (BSD License)
- *
- * Copyright (c) 2017, Michal Drwiega (drwiega.michal@gmail.com)
- * All rights reserved.
- *****************************************************************************/
-
 #pragma once
 
 #include <ros/ros.h>
@@ -15,23 +8,22 @@
 
 namespace qr_detector {
 
-class QrDetectorNodelet : public nodelet::Nodelet
-{
-public:
-    QrDetectorNodelet();
-    virtual ~QrDetectorNodelet();
+class QrDetectorNodelet : public nodelet::Nodelet {
+ public:
+  QrDetectorNodelet();
+  virtual ~QrDetectorNodelet();
 
 private:
-    void onInit() override;
-    void connectCallback();
-    void disconnectCallback();
-    void imageCallback(const sensor_msgs::ImageConstPtr& image);
+  void onInit() override;
+  void connectCallback();
+  void disconnectCallback();
+  void imageCallback(const sensor_msgs::ImageConstPtr& image);
 
-    ros::NodeHandle nh_;
-    image_transport::ImageTransport it_;
-    image_transport::Subscriber img_subscriber_;
-    ros::Publisher tags_publisher_;
-    Detector detector_;
+  ros::NodeHandle nh_;
+  image_transport::ImageTransport it_;
+  image_transport::Subscriber img_subscriber_;
+  ros::Publisher tags_publisher_;
+  Detector detector_;
 };
 
 }
